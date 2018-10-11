@@ -1,0 +1,43 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.5.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'br.unip.ads'
+version = '1.0.0'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Web (REST)
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	// Spring Security
+	implementation('org.springframework.boot:spring-boot-starter-security')
+	// Spring Data JPA (Repositories, Entities, Hibernate etc)
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	// Swagger (documentacao da API REST)
+	implementation('io.springfox:springfox-swagger2:2.9.2')
+	implementation('io.springfox:springfox-swagger-ui:2.9.2')
+	// Driver de Banco de Dados
+	runtimeOnly('mysql:mysql-connector-java')
+	
+	// Módulos de Testes
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation('org.springframework.security:spring-security-test')
+}
