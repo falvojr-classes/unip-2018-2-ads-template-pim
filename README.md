@@ -31,6 +31,10 @@ Com isso, basta executar a classe ***PimApplication.java*** da seguinte forma:
 
 ## Testes
 
-Antes de iniciar os testes, certifique-se de que a API está rodando corretamente. Para isso, analise o log na aba *Console* do seu eclipse. Nele, não deve haver nenhuma excecão e uma das ultimas linhas deve indicar que ela está pronta para uso: ***Tomcat started on port(s): 8080 (http)***.
+Antes de iniciar os testes, certifique-se de que a API está rodando corretamente. Para isso, analise o log na aba *Console* do seu eclipse. Nele, não deve haver nenhuma excecão e uma das ultimas linhas deve indicar que ela está pronta para uso: *Tomcat started on port(s): 8080 (http)*.
 
 Com isso, basta acessar a URL do Swagger que contém a documentacão da API: http://localhost:8080/swagger-ui.html (considere a porta configurada no *application.properties*).
+
+
+#### Nota
+Lembre-se que os endpoints da API são protegidos via Basic Authentication. Com isso, você deve se autenticar com um usuário válido (cadastrado em sua respectiva tabela no Banco de Dados).
