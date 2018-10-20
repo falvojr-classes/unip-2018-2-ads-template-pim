@@ -1,7 +1,6 @@
 package br.unip.ads.pim.controller;
 
 import java.net.URI;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.unip.ads.pim.config.SwaggerConfig;
 import br.unip.ads.pim.model.Cliente;
-import br.unip.ads.pim.repository.ClienteRepository;
+import br.unip.ads.pim.service.ClienteService;
 import io.swagger.annotations.Api;
 
 @Api(tags = SwaggerConfig.TAG_CLIENTE)
@@ -25,25 +24,25 @@ import io.swagger.annotations.Api;
 public class ClienteRestController extends BaseRestController {
 
 	@Autowired
-	private ClienteRepository clienteRepository;
+	private ClienteService clienteService;
 
 	@GetMapping
 	public ResponseEntity<Iterable<Cliente>> buscarTodos() {
-		Iterable<Cliente> clientes = clienteRepository.findAll();
+		Iterable<Cliente> clientes = clienteService.buscarTodos();
 		
-		return ResponseEntity.ok(clientes);
+		return ResponseEntity.ok().body(clientes);
 	}
 
 	@GetMapping("{id}")
 	public ResponseEntity<Cliente> buscarUm(@PathVariable("id") Long id) {
-		Optional<Cliente> cliente = this.clienteRepository.findById(id);
+		Cliente cliente = this.clienteService.buscarUm(id);
 		
-		return ResponseEntity.ok(cliente.get());
+		return ResponseEntity.ok().body(cliente);
 	}
 
 	@PostMapping
 	public ResponseEntity<Void> incluir(@RequestBody Cliente cliente) {
-		this.clienteRepository.save(cliente);
+		this.clienteService.incluir(cliente);
 
 		final URI uriCliente = super.criarUriPorId(cliente.getId());
 
@@ -53,14 +52,14 @@ public class ClienteRestController extends BaseRestController {
 	@PutMapping("{id}")
 	public ResponseEntity<Void> atualizar(@PathVariable("id") Long id, @RequestBody Cliente cliente) {
 		cliente.setId(id);
-		this.clienteRepository.save(cliente);
+		this.clienteService.atualizar(cliente);
 
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("{id}")
 	public ResponseEntity<Void> remover(@PathVariable("id") Long id) {
-		this.clienteRepository.deleteById(id);
+		this.clienteService.remover(id);
 
 		return ResponseEntity.ok().build();
 	}

@@ -1,10 +1,8 @@
 package br.unip.ads.pim.controller;
 
 import java.net.URI;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.unip.ads.pim.config.SwaggerConfig;
 import br.unip.ads.pim.model.Chamado;
-import br.unip.ads.pim.repository.ChamadoRepository;
+import br.unip.ads.pim.service.ChamadoService;
 import io.swagger.annotations.Api;
 
 @Api(tags = SwaggerConfig.TAG_CHAMADO)
@@ -26,25 +24,25 @@ import io.swagger.annotations.Api;
 public class ChamadoRestController extends BaseRestController {
 
 	@Autowired
-	private ChamadoRepository chamadoRepository;
+	private ChamadoService chamadoService;
 
 	@GetMapping
 	public ResponseEntity<Iterable<Chamado>> buscarTodos() {
-		Iterable<Chamado> chamados = chamadoRepository.findAll();
+		Iterable<Chamado> chamados = chamadoService.buscarTodos();
 
-		return ResponseEntity.ok(chamados);
+		return ResponseEntity.ok().body(chamados);
 	}
 
 	@GetMapping("{id}")
 	public ResponseEntity<Chamado> buscarUm(@PathVariable("id") Long id) {
-		Optional<Chamado> chamado = this.chamadoRepository.findById(id);
+		Chamado chamado = this.chamadoService.buscarUm(id);
 
-		return ResponseEntity.status(HttpStatus.OK).body(chamado.get());
+		return ResponseEntity.ok().body(chamado);
 	}
 
 	@PostMapping
 	public ResponseEntity<Void> incluir(@RequestBody Chamado chamado) {
-		this.chamadoRepository.save(chamado);
+		this.chamadoService.incluir(chamado);
 
 		final URI uriChamado = super.criarUriPorId(chamado.getId());
 
@@ -54,14 +52,14 @@ public class ChamadoRestController extends BaseRestController {
 	@PutMapping("{id}")
 	public ResponseEntity<Void> atualizar(@PathVariable("id") Long id, @RequestBody Chamado chamado) {
 		chamado.setId(id);
-		this.chamadoRepository.save(chamado);
+		this.chamadoService.atualizar(chamado);
 
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("{id}")
 	public ResponseEntity<Void> remover(@PathVariable("id") Long id) {
-		this.chamadoRepository.deleteById(id);
+		this.chamadoService.remover(id);
 
 		return ResponseEntity.ok().build();
 	}

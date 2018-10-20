@@ -7,8 +7,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.unip.ads.pim.util.ExcecaoNegocial;
+
 @RestControllerAdvice
 public abstract class BaseRestController {
+	
+	@ExceptionHandler(ExcecaoNegocial.class)
+	public ResponseEntity<String> handleExcecaoNegocial(ExcecaoNegocial ex) {
+		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+	}
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleUnknowException(Exception ex) {
