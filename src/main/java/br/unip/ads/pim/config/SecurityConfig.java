@@ -26,25 +26,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// Atribui o conceito de Stateless (API REST livre de estado/sessao)
-		 http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		// Restringe acesso atravez do conceito Basic Authentication na API REST
-		http.authorizeRequests()
-			.antMatchers("/api/**").authenticated()
-			 // https://stackoverflow.com/a/44115120/3072570
-			.antMatchers(HttpMethod.OPTIONS).permitAll()
-			.and().httpBasic();
-		
-		// CORS (Cross-Origin Resource Sharing) e CSRF (Cross-Site Request Forgery)
-		http.cors().and().csrf().disable();
+		http.sessionManagement()
+				// Atribui o conceito de Stateless (API REST livre de estado/sessao)
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+			.authorizeRequests()
+				// Libera os endpoints de Cadastro (Cliente e Funcionário)
+				.antMatchers(HttpMethod.POST, "/api/clientes").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/funcionarios").permitAll()
+				// Evitar 401 no método OPTIONS: https://stackoverflow.com/a/44115120/3072570
+				.antMatchers(HttpMethod.OPTIONS).permitAll()
+				.and()
+			.authorizeRequests()
+				// Restringe acesso atravez do conceito Basic Authentication na API REST
+				.antMatchers("/api/**").authenticated()
+				.and()
+			// Ativar o Basic Authentication nos endpoints com autenticacão 
+			.httpBasic()
+				.and()
+			// CORS (Cross-Origin Resource Sharing) e CSRF (Cross-Site Request Forgery)
+			.cors().and().csrf().disable();
 	}
-	
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-    	// https://stackoverflow.com/a/46372687/3072570
-        registry.addMapping("/**")
-        	.allowedMethods("GET", "POST", "PUT", "DELETE")
-        	.allowedOrigins("*")
-        	.allowedHeaders("*");
-    }
+
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		// Permitir CORS: https://stackoverflow.com/a/46372687/3072570
+		registry.addMapping("/**")
+				.allowedMethods("GET", "POST", "PUT", "DELETE")
+				.allowedOrigins("*")
+				.allowedHeaders("*");
+	}
 }
