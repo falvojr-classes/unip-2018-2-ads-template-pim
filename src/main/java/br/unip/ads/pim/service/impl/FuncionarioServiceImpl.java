@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.unip.ads.pim.model.Funcionario;
 import br.unip.ads.pim.repository.FuncionarioRepository;
 import br.unip.ads.pim.service.FuncionarioService;
-import br.unip.ads.pim.util.ExcecaoNegocial;
+import br.unip.ads.pim.utils.ExcecaoNegocial;
 
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {

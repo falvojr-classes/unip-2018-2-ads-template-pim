@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.unip.ads.pim.util.ApiError;
-import br.unip.ads.pim.util.ExcecaoNegocial;
+import br.unip.ads.pim.model.ApiError;
+import br.unip.ads.pim.utils.ExcecaoNegocial;
 
 @Component
 public abstract class BaseRestController {

@@ -1,4 +1,4 @@
-package br.unip.ads.pim.util;
+package br.unip.ads.pim.utils;
 
 public class ExcecaoNegocial extends RuntimeException {
 

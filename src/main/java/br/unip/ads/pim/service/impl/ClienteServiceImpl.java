@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.unip.ads.pim.model.Cliente;
 import br.unip.ads.pim.repository.ClienteRepository;
 import br.unip.ads.pim.service.ClienteService;
-import br.unip.ads.pim.util.ExcecaoNegocial;
+import br.unip.ads.pim.utils.ExcecaoNegocial;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
