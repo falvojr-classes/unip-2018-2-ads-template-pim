@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.unip.ads.pim.model.Chamado;
+import br.unip.ads.pim.model.ChamadoStatus;
+import br.unip.ads.pim.model.Cliente;
 import br.unip.ads.pim.repository.ChamadoRepository;
+import br.unip.ads.pim.repository.ClienteRepository;
 import br.unip.ads.pim.service.ChamadoService;
 import br.unip.ads.pim.util.ExcecaoNegocial;
 
@@ -15,12 +18,20 @@ public class ChamadoServiceImpl implements ChamadoService {
 
 	@Autowired
 	private ChamadoRepository chamadoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
 	
 	@Override
 	public void incluir(Chamado chamado) {
 		if (chamado.getId() != null) {
 			throw new ExcecaoNegocial("O ID não deve ser especificado.");
 		}
+		Long idCliente = chamado.getCliente().getId();
+		Optional<Cliente> cliente = clienteRepository.findById(idCliente);
+		if (!cliente.isPresent()) {
+			throw new ExcecaoNegocial("Apenas clientes podem abrir chamados.");
+		}
+		chamado.setStatus(ChamadoStatus.ABERTO);
 		this.chamadoRepository.save(chamado);
 	}
 
