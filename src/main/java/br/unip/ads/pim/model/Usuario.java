@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 @MappedSuperclass
 public abstract class Usuario {
@@ -12,13 +13,19 @@ public abstract class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
+	
 	@Column(nullable = false)
 	protected String nome;
+	
 	@Column(nullable = false, unique = true)
 	protected String email;
+	
 	@Column(nullable = false)
 	protected String senha;
 
+	@Transient
+	protected boolean funcionario;
+	
 	public Long getId() {
 		return id;
 	}
@@ -51,4 +58,8 @@ public abstract class Usuario {
 		this.senha = senha;
 	}
 
+	public boolean isFuncionario() {
+		return this instanceof Funcionario;
+	}
+ 
 }

@@ -1,5 +1,6 @@
 package br.unip.ads.pim.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ChamadoServiceImpl implements ChamadoService {
 	private ChamadoRepository chamadoRepository;
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
+
 	@Override
 	public void incluir(Chamado chamado) {
 		if (chamado.getId() != null) {
@@ -32,12 +33,15 @@ public class ChamadoServiceImpl implements ChamadoService {
 			throw new ExcecaoNegocial("Apenas clientes podem abrir chamados.");
 		}
 		chamado.setStatus(ChamadoStatus.ABERTO);
+		chamado.setInicio(LocalDateTime.now());
 		this.chamadoRepository.save(chamado);
 	}
 
 	@Override
 	public Iterable<Chamado> buscarTodos() {
-		return this.chamadoRepository.findAll();
+		return this.chamadoRepository.findByStatusInOrderByInicioAsc(
+				ChamadoStatus.ABERTO, 
+				ChamadoStatus.EM_ANDAMENTO);
 	}
 
 	@Override

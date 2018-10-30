@@ -12,26 +12,37 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Chamado {
 	
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+    
 	@Column(nullable = false)
 	private String titulo;
+	
 	@Column(nullable = false)
 	private String descricao;
+	
 	@Column
 	@Enumerated(EnumType.STRING)
 	private ChamadoStatus status;
+	
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@Column(nullable = false)
-	private LocalDateTime inicio = LocalDateTime.now();
+	private LocalDateTime inicio;
+	
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	@Column
 	private LocalDateTime fim;
-	@ManyToOne(fetch=FetchType.LAZY)    
+	
+	@ManyToOne(fetch=FetchType.EAGER)    
     public Cliente cliente;
-	@ManyToOne(fetch=FetchType.LAZY)    
+	
+	@ManyToOne(fetch=FetchType.EAGER)    
     public Funcionario funcionario;
 
 	public Long getId() {
