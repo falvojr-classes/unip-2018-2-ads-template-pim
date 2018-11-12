@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.unip.ads.pim.config.SwaggerConfig;
@@ -27,8 +28,10 @@ public class ChamadoRestController extends BaseRestController {
 	private ChamadoService chamadoService;
 
 	@GetMapping
-	public ResponseEntity<Iterable<Chamado>> buscarTodos() {
-		Iterable<Chamado> chamados = chamadoService.buscarTodos();
+	public ResponseEntity<Iterable<Chamado>> buscarTodos(
+			@RequestParam(value="idCliente", required=false) String idCliente,
+			@RequestParam(value="idFuncionario", required=false) String idFuncionario) {
+		Iterable<Chamado> chamados = chamadoService.buscarTodos(idCliente, idFuncionario);
 
 		return ResponseEntity.ok().body(chamados);
 	}

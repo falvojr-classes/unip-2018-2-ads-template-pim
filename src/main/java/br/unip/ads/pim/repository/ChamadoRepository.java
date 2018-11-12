@@ -15,4 +15,10 @@ public interface ChamadoRepository extends CrudRepository<Chamado, Long> {
 	// WHERE status IN (parametro status)
 	// ORDER BY inicio ASC
 	List<Chamado> findByStatusInOrderByInicioAsc(ChamadoStatus... status);
+	
+	// SELECT * FROM chamado cha
+	// INNER JOIN cliente cli
+	// WHERE cli.id = :idCliente
+	// ORDER BY cha.inicio ASC
+	List<Chamado> findByCliente_IdOrderByInicioDesc(Long idCliente);
 }
